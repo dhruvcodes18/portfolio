@@ -1,0 +1,1135 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dhruv Vikhe | AI & Data Strategist • Consultant & Builder</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+            serif: ['Instrument Serif', 'serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            ink: '#09090b',
+            surface: '#121215',
+            cream: '#f4f1ea',
+            gold: '#e2b857',
+            sage: '#34d399'
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    :root {
+      --cursor-x: 50vw;
+      --cursor-y: 50vh;
+    }
+    body {
+      background-color: #09090b;
+      color: #f4f1ea;
+      overflow-x: hidden;
+    }
+    /* Global Cursor Ambient Spotlight */
+    #ambient-spotlight {
+      background: radial-gradient(
+        700px circle at var(--cursor-x) var(--cursor-y),
+        rgba(226, 184, 87, 0.08),
+        rgba(52, 211, 153, 0.035) 40%,
+        transparent 75%
+      );
+    }
+    /* Editorial Glass Card with localized mouse-hover glow */
+    .glass-card {
+      background: rgba(18, 18, 22, 0.68);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(244, 241, 234, 0.08);
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.35s ease, box-shadow 0.35s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .glass-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(
+        420px circle at var(--card-x, -200px) var(--card-y, -200px),
+        rgba(226, 184, 87, 0.13),
+        transparent 65%
+      );
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+    }
+    .glass-card:hover::before {
+      opacity: 1;
+    }
+    .glass-card:hover {
+      border-color: rgba(226, 184, 87, 0.38);
+      transform: translateY(-3px);
+      box-shadow: 0 24px 48px -15px rgba(0, 0, 0, 0.75), 0 0 30px -10px rgba(226, 184, 87, 0.12);
+    }
+    /* Infinite Marquee */
+    @keyframes marquee {
+      0% { transform: translateX(0%); }
+      100% { transform: translateX(-50%); }
+    }
+    .animate-marquee {
+      display: flex;
+      width: max-content;
+      animation: marquee 30s linear infinite;
+    }
+    .animate-marquee:hover {
+      animation-play-state: paused;
+    }
+    /* Equalizer Bars for Afro-House Widget */
+    @keyframes eqBar {
+      0%, 100% { height: 5px; }
+      50% { height: 18px; }
+    }
+    .eq-bar {
+      width: 3px;
+      background-color: #e2b857;
+      border-radius: 999px;
+      animation: eqBar 1s ease-in-out infinite;
+    }
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #09090b; }
+    ::-webkit-scrollbar-thumb { background: #27272a; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #e2b857; }
+  </style>
+</head>
+
+<body class="font-sans antialiased selection:bg-amber-400/20 selection:text-amber-200 relative">
+
+  <!-- ================= INTERACTIVE MOUSE-HOVER CANVAS BACKGROUND ================= -->
+  <canvas id="interactive-bg" class="fixed inset-0 z-0 pointer-events-none"></canvas>
+  <div id="ambient-spotlight" class="fixed inset-0 z-0 pointer-events-none transition-opacity duration-300"></div>
+
+  <!-- ================= FLOATING EDITORIAL NAVBAR ================= -->
+  <header class="fixed top-5 inset-x-0 z-40 mx-auto max-w-6xl px-4">
+    <nav class="glass-card rounded-full px-5 py-3 flex items-center justify-between shadow-2xl">
+      <a href="#" class="flex items-center gap-2.5 relative z-10">
+        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span class="font-semibold tracking-tight text-sm sm:text-base text-cream">Dhruv Vikhe</span>
+        <span class="hidden sm:inline-block text-xs font-mono text-zinc-400">| Strategist & AI Builder</span>
+      </a>
+
+      <div class="hidden lg:flex items-center gap-7 text-xs uppercase tracking-widest font-mono text-zinc-400 relative z-10">
+        <a href="#story" class="hover:text-amber-300 transition">Narrative</a>
+        <a href="#framework" class="hover:text-amber-300 transition">Process</a>
+        <a href="#work" class="hover:text-amber-300 transition">Case Studies</a>
+        <a href="#notes" class="hover:text-amber-300 transition">Field Notes</a>
+        <a href="#beyond" class="hover:text-amber-300 transition">Off-Duty</a>
+        <a href="#experience" class="hover:text-amber-300 transition">Track Record</a>
+      </div>
+
+      <div class="flex items-center gap-2.5 relative z-10">
+        <div class="hidden sm:flex items-center gap-1.5 px-3 py-1 rounded-full bg-zinc-900/90 border border-zinc-800 text-[11px] font-mono text-zinc-400">
+          <span>PNQ</span>
+          <span class="text-amber-300">•</span>
+          <span id="pune-clock">IST</span>
+        </div>
+        <a href="https://www.linkedin.com/in/dhruv-vikhe/" target="_blank" rel="noopener"
+           class="px-3.5 py-1.5 rounded-full bg-zinc-900 hover:bg-zinc-800 border border-zinc-700/80 text-xs font-mono text-zinc-200 flex items-center gap-1.5 transition">
+          <i data-lucide="linkedin" class="w-3.5 h-3.5 text-amber-300"></i> LinkedIn
+        </a>
+        <a href="#contact"
+           class="px-4 py-1.5 rounded-full bg-cream text-ink hover:bg-amber-200 font-semibold text-xs transition">
+          Let’s Talk
+        </a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ================= HERO SECTION ================= -->
+  <section class="relative z-10 max-w-6xl mx-auto px-4 pt-32 pb-14 lg:pt-40 lg:pb-20">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+
+      <!-- Left Column: Editorial Headline & Positioning -->
+      <div class="lg:col-span-7 space-y-6">
+        <div class="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-zinc-900/90 border border-zinc-800 text-xs font-mono text-zinc-300">
+          <span class="px-2 py-0.5 rounded-full bg-amber-400/15 text-amber-300">Pune, India</span>
+          <span>Decision Strategy • Applied AI • Community Growth</span>
+        </div>
+
+        <h1 class="text-4xl sm:text-6xl lg:text-[64px] font-light tracking-tight leading-[1.06] text-cream">
+          Turning <span class="font-serif italic text-amber-300 font-normal">noisy data</span> into sharp strategy & human-centric AI.
+        </h1>
+
+        <p class="text-zinc-300 text-base sm:text-lg leading-relaxed max-w-2xl font-light">
+          I’m <strong class="text-cream font-medium">Dhruv Vikhe</strong> — an AI & Data Strategist, engineer, and storyteller based in Pune. I work at the intersection of <span class="text-cream">multimodal machine learning, forensic data analytics, and high-impact outreach</span>—helping teams see around corners and ship systems that earn real-world trust.
+        </p>
+
+        <!-- Action Row -->
+        <div class="pt-2 flex flex-wrap items-center gap-3.5">
+          <a href="#work" class="px-6 py-3 rounded-full bg-cream text-ink hover:bg-amber-200 font-semibold text-sm flex items-center gap-2 transition shadow-lg shadow-amber-500/10">
+            Read Case Studies <i data-lucide="arrow-down-right" class="w-4 h-4"></i>
+          </a>
+          <a href="https://github.com/dhruvcodes18" target="_blank" rel="noopener"
+             class="px-5 py-3 rounded-full glass-card text-cream hover:border-amber-300/50 text-sm font-mono flex items-center gap-2">
+            <i data-lucide="github" class="w-4 h-4 text-amber-300"></i> @dhruvcodes18
+          </a>
+          <button onclick="copyEmail()" id="hero-email-btn"
+             class="px-4 py-3 rounded-full glass-card text-zinc-300 hover:text-cream text-xs font-mono flex items-center gap-2">
+            <i data-lucide="copy" class="w-3.5 h-3.5 text-emerald-400"></i> dhruvvikhe1820@gmail.com
+          </button>
+        </div>
+
+        <!-- Proof Metrics Bar -->
+        <div class="pt-6 grid grid-cols-2 sm:grid-cols-4 gap-4 border-t border-zinc-800/80">
+          <div>
+            <div class="font-serif italic text-3xl text-amber-300">9.28<span class="text-base text-zinc-500 not-italic">/10</span></div>
+            <div class="text-xs text-zinc-400 mt-0.5">CGPA • MIT-WPU AI & DS</div>
+          </div>
+          <div>
+            <div class="font-serif italic text-3xl text-cream">04+</div>
+            <div class="text-xs text-zinc-400 mt-0.5">Deployed AI & Risk Pipelines</div>
+          </div>
+          <div>
+            <div class="font-serif italic text-3xl text-emerald-400">100+</div>
+            <div class="text-xs text-zinc-400 mt-0.5">CSI Community Outreach</div>
+          </div>
+          <div>
+            <div class="font-serif italic text-3xl text-sky-300">EN•HI•MR</div>
+            <div class="text-xs text-zinc-400 mt-0.5">Trilingual Fluency & NLP</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Editorial Portrait Card -->
+      <div class="lg:col-span-5 flex justify-center">
+        <div class="relative w-full max-w-sm">
+          <div class="absolute -inset-2 rounded-[32px] bg-gradient-to-tr from-amber-500/20 via-transparent to-emerald-500/20 blur-xl pointer-events-none"></div>
+
+          <div class="glass-card rounded-[28px] p-4 relative overflow-hidden group">
+            <div class="relative aspect-[4/5] w-full rounded-2xl overflow-hidden bg-zinc-900">
+              <img id="profile-photo"
+                   src="https://github.com/dhruvcodes18.png"
+                   onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=900&q=80'"
+                   alt="Dhruv Vikhe"
+                   class="w-full h-full object-cover object-center transition duration-700 group-hover:scale-105" />
+
+              <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/25 to-transparent"></div>
+
+              <!-- 1-Click LinkedIn Photo Upload -->
+              <label for="photo-upload" class="cursor-pointer absolute top-3 right-3 px-3 py-1.5 rounded-full bg-black/75 hover:bg-black text-[11px] font-mono text-amber-300 border border-white/15 backdrop-blur-md flex items-center gap-1.5 opacity-90 hover:opacity-100 transition">
+                <i data-lucide="camera" class="w-3.5 h-3.5"></i> Use LinkedIn Photo
+              </label>
+              <input id="photo-upload" type="file" accept="image/*" class="hidden" onchange="handlePhotoUpload(event)" />
+
+              <!-- Bottom Overlay Info inside Portrait -->
+              <div class="absolute bottom-4 left-4 right-4 flex items-end justify-between">
+                <div>
+                  <span class="text-[11px] font-mono uppercase tracking-widest text-amber-300 block">Consultant & Builder</span>
+                  <h2 class="text-xl font-semibold text-white">Dhruv Vikhe</h2>
+                  <p class="text-xs text-zinc-300">Pune, Maharashtra • MIT-WPU</p>
+                </div>
+                <a href="https://www.linkedin.com/in/dhruv-vikhe/" target="_blank" rel="noopener"
+                   title="Open LinkedIn Profile"
+                   class="w-10 h-10 rounded-full bg-white/10 hover:bg-amber-400 hover:text-ink text-white backdrop-blur-md flex items-center justify-center transition">
+                  <i data-lucide="arrow-up-right" class="w-5 h-5"></i>
+                </a>
+              </div>
+            </div>
+
+            <div class="pt-3 px-1 flex items-center justify-between text-xs font-mono text-zinc-400">
+              <span>"Clarity over complexity."</span>
+              <span class="text-emerald-400 flex items-center gap-1.5">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span> Open to Roles
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= LIVE "NOW IN PUNE" TELEMETRY STRIP ================= -->
+  <section class="relative z-10 max-w-6xl mx-auto px-4 pb-12">
+    <div class="glass-card rounded-2xl p-4 sm:px-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 items-center">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-xl bg-amber-400/10 border border-amber-400/20 flex items-center justify-center text-amber-300 shrink-0">
+          <i data-lucide="sparkles" class="w-4 h-4"></i>
+        </div>
+        <div>
+          <div class="text-[10px] font-mono uppercase tracking-wider text-zinc-400">Current Focus</div>
+          <div class="text-xs font-medium text-cream">Multimodal Voice Trust & XAI</div>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-xl bg-emerald-400/10 border border-emerald-400/20 flex items-center justify-center text-emerald-400 shrink-0">
+          <i data-lucide="compass" class="w-4 h-4"></i>
+        </div>
+        <div>
+          <div class="text-[10px] font-mono uppercase tracking-wider text-zinc-400">Civic R&D Concept</div>
+          <div class="text-xs font-medium text-cream">Pune Monsoon Flood Routing</div>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-xl bg-sky-400/10 border border-sky-400/20 flex items-center justify-center text-sky-400 shrink-0">
+          <i data-lucide="dumbbell" class="w-4 h-4"></i>
+        </div>
+        <div>
+          <div class="text-[10px] font-mono uppercase tracking-wider text-zinc-400">Daily Regimen</div>
+          <div class="text-xs font-medium text-cream">Strength Hypertrophy & Nutrition</div>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between gap-3 bg-zinc-900/70 px-3.5 py-2 rounded-xl border border-zinc-800/80">
+        <div class="flex items-center gap-2.5">
+          <div class="flex items-end gap-0.5 h-4">
+            <span class="eq-bar" style="animation-delay: 0s"></span>
+            <span class="eq-bar" style="animation-delay: 0.2s"></span>
+            <span class="eq-bar" style="animation-delay: 0.4s"></span>
+            <span class="eq-bar" style="animation-delay: 0.1s"></span>
+          </div>
+          <div>
+            <div class="text-[10px] font-mono text-amber-300 uppercase">Coding Rotation</div>
+            <div class="text-xs text-cream truncate">Afro-House • Hugel — I Adore You</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= INFINITE EDITORIAL MARQUEE ================= -->
+  <div class="relative z-10 border-y border-zinc-800/80 bg-zinc-950/60 py-4 overflow-hidden">
+    <div class="animate-marquee flex items-center gap-10 text-xs font-mono uppercase tracking-[0.2em] text-zinc-400">
+      <span>Data Strategy & Analytics</span><span class="text-amber-300">✦</span>
+      <span>Applied Machine Learning</span><span class="text-amber-300">✦</span>
+      <span>Multilingual Audio & NLP</span><span class="text-amber-300">✦</span>
+      <span>Graph Neural Networks</span><span class="text-amber-300">✦</span>
+      <span>Explainable AI (SHAP & LIME)</span><span class="text-amber-300">✦</span>
+      <span>Business Intelligence (Power BI & Tableau)</span><span class="text-amber-300">✦</span>
+      <span>Community Growth & Outreach</span><span class="text-amber-300">✦</span>
+      <span>Data Strategy & Analytics</span><span class="text-amber-300">✦</span>
+      <span>Applied Machine Learning</span><span class="text-amber-300">✦</span>
+      <span>Multilingual Audio & NLP</span><span class="text-amber-300">✦</span>
+      <span>Graph Neural Networks</span><span class="text-amber-300">✦</span>
+      <span>Explainable AI (SHAP & LIME)</span><span class="text-amber-300">✦</span>
+      <span>Business Intelligence (Power BI & Tableau)</span><span class="text-amber-300">✦</span>
+      <span>Community Growth & Outreach</span><span class="text-amber-300">✦</span>
+    </div>
+  </div>
+
+  <!-- ================= MAIN CONTENT ================= -->
+  <main class="relative z-10 max-w-6xl mx-auto px-4 py-20 space-y-28">
+
+    <!-- ================= 01. STORY & PHILOSOPHY ================= -->
+    <section id="story" class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+      <div class="lg:col-span-4 space-y-3">
+        <span class="text-xs font-mono uppercase tracking-widest text-amber-300">01 / The Narrative</span>
+        <h2 class="text-3xl sm:text-4xl font-light text-cream leading-tight">
+          An engineer’s rigor. <span class="font-serif italic text-amber-300">A strategist’s lens.</span>
+        </h2>
+        <p class="text-xs font-mono text-zinc-400 pt-1">
+          Hover over any card to interact with the surface light.
+        </p>
+      </div>
+
+      <div class="lg:col-span-8 space-y-6 text-zinc-300 text-base sm:text-lg leading-relaxed font-light">
+        <p>
+          Most engineers stop at model accuracy. Most consultants stop at the slide deck. <strong class="text-cream font-medium">I thrive in the gap between the two.</strong>
+        </p>
+        <p>
+          Whether I’m leading outreach campaigns for the Computer Society of India (CSI) to bring 100+ builders into an auditorium, investigating forensic datasets, or training a Gated Multimodal Fusion Network that detects synthetic voices across English, Hindi, and Marathi, my north star never changes: <span class="text-cream underline decoration-amber-400/50 underline-offset-4">start with the human decision, then engineer the cleanest mathematical path to support it.</span>
+        </p>
+
+        <!-- 3 Philosophy Mini-Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4">
+          <div class="glass-card rounded-2xl p-5">
+            <div class="text-amber-300 font-mono text-xs mb-2">I. FIRST PRINCIPLES</div>
+            <div class="text-sm font-medium text-cream">Diagnose Before Coding</div>
+            <p class="text-xs text-zinc-400 mt-1.5 leading-relaxed">
+              Every noisy dataset or operational bottleneck hides a structural pattern. I use EDA, SQL, and hypothesis testing to isolate what actually moves the needle.
+            </p>
+          </div>
+          <div class="glass-card rounded-2xl p-5">
+            <div class="text-emerald-400 font-mono text-xs mb-2">II. ARCHITECTURE</div>
+            <div class="text-sm font-medium text-cream">Build Explainable AI</div>
+            <p class="text-xs text-zinc-400 mt-1.5 leading-relaxed">
+              Black-box predictions don’t survive boardrooms. From gated sigmoid fusion to precision/recall trade-offs, I build systems stakeholders can audit and trust.
+            </p>
+          </div>
+          <div class="glass-card rounded-2xl p-5">
+            <div class="text-sky-400 font-mono text-xs mb-2">III. MOMENTUM</div>
+            <div class="text-sm font-medium text-cream">Bridge Tech & People</div>
+            <p class="text-xs text-zinc-400 mt-1.5 leading-relaxed">
+              Great systems need adoption. My background in technical marketing and cross-functional outreach helps me translate complex pipelines into executive clarity.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 02. INTERACTIVE 4-STAGE STRATEGIC FRAMEWORK ================= -->
+    <section id="framework" class="space-y-8">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+        <div>
+          <span class="text-xs font-mono uppercase tracking-widest text-amber-300">02 / Methodology</span>
+          <h2 class="text-3xl sm:text-4xl font-light text-cream mt-1">
+            How I Take Ideas From <span class="font-serif italic text-amber-300">Ambiguity to Impact</span>
+          </h2>
+        </div>
+        <p class="text-xs font-mono text-zinc-400">Click any stage below to inspect my workflow</p>
+      </div>
+
+      <!-- Interactive Stage Selector Buttons -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+        <button onclick="setStage(0)" id="stage-btn-0" class="stage-btn glass-card rounded-2xl p-4 text-left border-amber-400/50 bg-amber-400/10">
+          <div class="text-xs font-mono text-amber-300">PHASE 01</div>
+          <div class="text-sm sm:text-base font-semibold text-cream mt-1">Discover & Frame</div>
+        </button>
+        <button onclick="setStage(1)" id="stage-btn-1" class="stage-btn glass-card rounded-2xl p-4 text-left">
+          <div class="text-xs font-mono text-zinc-400">PHASE 02</div>
+          <div class="text-sm sm:text-base font-semibold text-cream mt-1">Data & Graph Topology</div>
+        </button>
+        <button onclick="setStage(2)" id="stage-btn-2" class="stage-btn glass-card rounded-2xl p-4 text-left">
+          <div class="text-xs font-mono text-zinc-400">PHASE 03</div>
+          <div class="text-sm sm:text-base font-semibold text-cream mt-1">Model & Explain</div>
+        </button>
+        <button onclick="setStage(3)" id="stage-btn-3" class="stage-btn glass-card rounded-2xl p-4 text-left">
+          <div class="text-xs font-mono text-zinc-400">PHASE 04</div>
+          <div class="text-sm sm:text-base font-semibold text-cream mt-1">Deploy & Evangelize</div>
+        </button>
+      </div>
+
+      <!-- Dynamic Stage Display Panel -->
+      <div class="glass-card rounded-3xl p-7 sm:p-9 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        <div class="lg:col-span-7 space-y-4">
+          <div id="stage-badge" class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-400/15 text-amber-300 text-xs font-mono">
+            PHASE 01 • PROBLEM FORMULATION & FORENSIC EDA
+          </div>
+          <h3 id="stage-title" class="text-2xl sm:text-3xl font-semibold text-cream">
+            Separating symptoms from root causes before writing a single line of PyTorch.
+          </h3>
+          <p id="stage-desc" class="text-sm sm:text-base text-zinc-300 leading-relaxed font-light">
+            In consulting and applied AI alike, 80% of wasted effort comes from solving the wrong metric. I start by interviewing stakeholders, auditing raw SQL/tabular schemas, handling missing-value bias, and establishing a baseline business KPI—whether that’s reducing false-positive loan rejections or catching synthetic voice fraud in under 400ms.
+          </p>
+        </div>
+        <div class="lg:col-span-5 bg-zinc-950/80 border border-zinc-800/90 rounded-2xl p-6 space-y-4">
+          <div class="text-xs font-mono uppercase tracking-wider text-zinc-400">Key Deliverables & Tools</div>
+          <div id="stage-tools" class="flex flex-wrap gap-2">
+            <span class="px-3 py-1 rounded-full bg-zinc-900 border border-zinc-700 text-xs font-mono text-amber-300">Exploratory Data Analysis (EDA)</span>
+            <span class="px-3 py-1 rounded-full bg-zinc-900 border border-zinc-700 text-xs font-mono text-cream">SQL (MySQL)</span>
+            <span class="px-3 py-1 rounded-full bg-zinc-900 border border-zinc-700 text-xs font-mono text-cream">Statistical Hypothesis Testing</span>
+            <span class="px-3 py-1 rounded-full bg-zinc-900 border border-zinc-700 text-xs font-mono text-cream">Pandas & NumPy</span>
+          </div>
+          <div class="pt-3 border-t border-zinc-800 text-xs font-mono text-emerald-400" id="stage-outcome">
+            ✦ Outcome: Clean, validated feature pipelines ready for modeling.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 03. SELECTED CASE STUDIES (WITH DEEP-DIVE DRAWER) ================= -->
+    <section id="work" class="space-y-10">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+        <div>
+          <span class="text-xs font-mono uppercase tracking-widest text-amber-300">03 / Selected Case Studies</span>
+          <h2 class="text-3xl sm:text-4xl font-light text-cream mt-1">
+            Problems Solved & <span class="font-serif italic text-amber-300">Systems Shipped</span>
+          </h2>
+        </div>
+        <a href="https://github.com/dhruvcodes18" target="_blank" rel="noopener"
+           class="text-xs font-mono text-amber-300 hover:underline flex items-center gap-1">
+          View All Repositories on GitHub (@dhruvcodes18) <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
+        </a>
+      </div>
+
+      <div class="space-y-5">
+        <!-- Case Study 01 -->
+        <div class="glass-card rounded-3xl p-6 sm:p-8 cursor-pointer" onclick="openCaseModal('deepfake')">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+            <div class="lg:col-span-4 space-y-2">
+              <div class="text-xs font-mono text-amber-300">CASE 01 • VOICE TRUST & SECURITY (AUG 2026–PRESENT)</div>
+              <h3 class="text-2xl font-semibold text-cream">Multilingual Audio Deepfake & Sentiment Intelligence</h3>
+              <p class="text-xs font-mono text-zinc-400">PyTorch • Whisper • Wav2Vec2 • Flask</p>
+            </div>
+            <div class="lg:col-span-5 text-sm text-zinc-300 space-y-2 leading-relaxed">
+              <p><strong class="text-cream">The Challenge:</strong> AI voice-cloning scams increasingly target regional Indian speakers, where single-modality detectors break down.</p>
+              <p><strong class="text-cream">The Strategy & Solution:</strong> Engineered a 3-module real-time pipeline with a custom <em>Gated Multimodal Fusion Network</em> balancing acoustic prosody against English, Hindi, and Marathi transcripts.</p>
+            </div>
+            <div class="lg:col-span-3 flex lg:justify-end">
+              <button class="px-4 py-2.5 rounded-full bg-zinc-900 hover:bg-amber-400 hover:text-ink border border-zinc-700 text-xs font-mono transition flex items-center gap-2">
+                Read Case Brief <i data-lucide="maximize-2" class="w-3.5 h-3.5"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Case Study 02 -->
+        <div class="glass-card rounded-3xl p-6 sm:p-8 cursor-pointer" onclick="openCaseModal('gnn')">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+            <div class="lg:col-span-4 space-y-2">
+              <div class="text-xs font-mono text-emerald-400">CASE 02 • FINTECH RISK TOPOLOGY (OCT–DEC 2025)</div>
+              <h3 class="text-2xl font-semibold text-cream">Financial Fraud Detection via Graph Neural Networks</h3>
+              <p class="text-xs font-mono text-zinc-400">Python • PyTorch Geometric • Graph ML</p>
+            </div>
+            <div class="lg:col-span-5 text-sm text-zinc-300 space-y-2 leading-relaxed">
+              <p><strong class="text-cream">The Challenge:</strong> Row-by-row tabular fraud classifiers miss coordinated money-laundering rings across linked accounts.</p>
+              <p><strong class="text-cream">The Strategy & Solution:</strong> Modeled financial transactions as relational graphs in PyTorch Geometric, applying node classification to expose high-risk anomalous clusters.</p>
+            </div>
+            <div class="lg:col-span-3 flex lg:justify-end">
+              <button class="px-4 py-2.5 rounded-full bg-zinc-900 hover:bg-amber-400 hover:text-ink border border-zinc-700 text-xs font-mono transition flex items-center gap-2">
+                Read Case Brief <i data-lucide="maximize-2" class="w-3.5 h-3.5"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Case Study 03 -->
+        <div class="glass-card rounded-3xl p-6 sm:p-8 cursor-pointer" onclick="openCaseModal('ats')">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+            <div class="lg:col-span-4 space-y-2">
+              <div class="text-xs font-mono text-sky-400">CASE 03 • TALENT INTELLIGENCE (FEB–MAY 2026)</div>
+              <h3 class="text-2xl font-semibold text-cream">Automated JD-to-Resume Semantic ATS Engine</h3>
+              <p class="text-xs font-mono text-zinc-400">Python • NLP • Pandas • Ranking Algorithms</p>
+            </div>
+            <div class="lg:col-span-5 text-sm text-zinc-300 space-y-2 leading-relaxed">
+              <p><strong class="text-cream">The Challenge:</strong> Rigid keyword filters in legacy hiring pipelines reject high-fit engineering candidates.</p>
+              <p><strong class="text-cream">The Strategy & Solution:</strong> Built an end-to-end NLP matcher that extracts domain skills, computes semantic relevance scores, and ranks resumes against job descriptions.</p>
+            </div>
+            <div class="lg:col-span-3 flex lg:justify-end">
+              <button class="px-4 py-2.5 rounded-full bg-zinc-900 hover:bg-amber-400 hover:text-ink border border-zinc-700 text-xs font-mono transition flex items-center gap-2">
+                Read Case Brief <i data-lucide="maximize-2" class="w-3.5 h-3.5"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Case Study 04 -->
+        <div class="glass-card rounded-3xl p-6 sm:p-8 cursor-pointer" onclick="openCaseModal('loan')">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+            <div class="lg:col-span-4 space-y-2">
+              <div class="text-xs font-mono text-purple-400">CASE 04 • CREDIT DECISIONING (JAN–MAR 2025)</div>
+              <h3 class="text-2xl font-semibold text-cream">Supervised Loan Risk Classification Pipeline</h3>
+              <p class="text-xs font-mono text-zinc-400">Python • Scikit-Learn • Pandas • Seaborn</p>
+            </div>
+            <div class="lg:col-span-5 text-sm text-zinc-300 space-y-2 leading-relaxed">
+              <p><strong class="text-cream">The Challenge:</strong> Incomplete borrower histories and noisy financial attributes skew default predictions in retail lending.</p>
+              <p><strong class="text-cream">The Strategy & Solution:</strong> Designed a full imputation, quality-check, and supervised classification pipeline evaluated on Precision, Recall, and F1-Score for risk reporting.</p>
+            </div>
+            <div class="lg:col-span-3 flex lg:justify-end">
+              <button class="px-4 py-2.5 rounded-full bg-zinc-900 hover:bg-amber-400 hover:text-ink border border-zinc-700 text-xs font-mono transition flex items-center gap-2">
+                Read Case Brief <i data-lucide="maximize-2" class="w-3.5 h-3.5"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 04. STRATEGIC FIELD NOTES & VENTURE CONCEPTS (NEW!) ================= -->
+    <section id="notes" class="space-y-10">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+        <div>
+          <span class="text-xs font-mono uppercase tracking-widest text-amber-300">04 / Field Notes & R&D Concepts</span>
+          <h2 class="text-3xl sm:text-4xl font-light text-cream mt-1">
+            Strategic Theses & <span class="font-serif italic text-amber-300">Civic Innovation</span>
+          </h2>
+        </div>
+        <p class="text-xs font-mono text-zinc-400">Click any thesis to read the executive memo</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Thesis 1 -->
+        <div onclick="openCaseModal('pune_flood')" class="glass-card rounded-3xl p-7 flex flex-col justify-between cursor-pointer">
+          <div>
+            <div class="flex items-center justify-between text-xs font-mono text-amber-300 mb-4">
+              <span>URBAN RESILIENCE • PUNE</span>
+              <span>MEMO 01</span>
+            </div>
+            <h3 class="text-xl font-semibold text-cream leading-snug">
+              Monsoon Flood Prediction & Dynamic Commuter Routing Engine for Pune
+            </h3>
+            <p class="text-sm text-zinc-400 mt-3 leading-relaxed">
+              Standard navigation apps route Pune commuters straight into waterlogged underpasses during peak cloudbursts. Here is how combining topographical elevation data, rainfall telemetry, and graph shortest-path routing can keep a city moving.
+            </p>
+          </div>
+          <div class="pt-6 mt-6 border-t border-zinc-800/80 flex items-center justify-between text-xs font-mono text-amber-300">
+            <span>Read Strategic Memo</span>
+            <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+          </div>
+        </div>
+
+        <!-- Thesis 2 -->
+        <div onclick="openCaseModal('legal_xai')" class="glass-card rounded-3xl p-7 flex flex-col justify-between cursor-pointer">
+          <div>
+            <div class="flex items-center justify-between text-xs font-mono text-emerald-400 mb-4">
+              <span>EXPLAINABLE AI • LEGAL & RISK</span>
+              <span>MEMO 02</span>
+            </div>
+            <h3 class="text-xl font-semibold text-cream leading-snug">
+              Automated Contract Risk Analysis with SHAP & LIME Interpretability
+            </h3>
+            <p class="text-sm text-zinc-400 mt-3 leading-relaxed">
+              Why legal and financial teams refuse to trust black-box LLM summaries—and how pairing transformer clause classification with token-level attribution highlights toxic indemnity and liability clauses transparently.
+            </p>
+          </div>
+          <div class="pt-6 mt-6 border-t border-zinc-800/80 flex items-center justify-between text-xs font-mono text-emerald-400">
+            <span>Read Strategic Memo</span>
+            <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+          </div>
+        </div>
+
+        <!-- Thesis 3 -->
+        <div onclick="openCaseModal('indic_voice')" class="glass-card rounded-3xl p-7 flex flex-col justify-between cursor-pointer">
+          <div>
+            <div class="flex items-center justify-between text-xs font-mono text-sky-400 mb-4">
+              <span>MULTIMODAL AI • BHARAT</span>
+              <span>MEMO 03</span>
+            </div>
+            <h3 class="text-xl font-semibold text-cream leading-snug">
+              Why Acoustic Prosody Alone Fails in Regional Indian Deepfake Detection
+            </h3>
+            <p class="text-sm text-zinc-400 mt-3 leading-relaxed">
+              Code-switched Hindi and Marathi speech carries distinct cadence patterns. Combining `Wav2Vec2` acoustic representations with `Whisper` semantic embeddings via a learned sigmoid gate prevents false alarms on native accents.
+            </p>
+          </div>
+          <div class="pt-6 mt-6 border-t border-zinc-800/80 flex items-center justify-between text-xs font-mono text-sky-400">
+            <span>Read Strategic Memo</span>
+            <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 05. BEYOND THE TERMINAL (PERSONAL LIFE & VIBE) ================= -->
+    <section id="beyond" class="space-y-10">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+        <div>
+          <span class="text-xs font-mono uppercase tracking-widest text-amber-300">05 / Beyond The Resume</span>
+          <h2 class="text-3xl sm:text-4xl font-light text-cream mt-1">
+            Life, Rhythm & <span class="font-serif italic text-amber-300">Perspective Off-Duty</span>
+          </h2>
+        </div>
+        <p class="text-xs font-mono text-zinc-400">The habits and curiosities that shape how I think</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+        <!-- Personal Card 1: Music -->
+        <div class="glass-card rounded-3xl p-6 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between text-xs font-mono text-amber-300 mb-4">
+              <span>01 / SOUNDSCAPE</span>
+              <i data-lucide="disc-3" class="w-4 h-4 animate-spin" style="animation-duration: 8s;"></i>
+            </div>
+            <h3 class="text-lg font-semibold text-cream">Afro-House & Melodic Grooves</h3>
+            <p class="text-xs text-zinc-400 mt-2 leading-relaxed">
+              My best deep-work sprints happen past midnight with Afro-house and percussion-heavy house sets playing in the background—tracks like Hugel’s <em>"I Adore You"</em> set the tempo for architecture design.
+            </p>
+          </div>
+          <div class="mt-6 pt-3 border-t border-zinc-800/80 text-[11px] font-mono text-amber-300">
+            Rhythm Fuels Focus
+          </div>
+        </div>
+
+        <!-- Personal Card 2: Fitness -->
+        <div class="glass-card rounded-3xl p-6 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between text-xs font-mono text-emerald-400 mb-4">
+              <span>02 / DISCIPLINE</span>
+              <i data-lucide="dumbbell" class="w-4 h-4"></i>
+            </div>
+            <h3 class="text-lg font-semibold text-cream">Strength & Hypertrophy</h3>
+            <p class="text-xs text-zinc-400 mt-2 leading-relaxed">
+              I treat daily dumbbell strength training, managing set fatigue, and hitting my daily protein targets (omelettes & chicken over boiled eggs any day) with the same consistency as model optimization.
+            </p>
+          </div>
+          <div class="mt-6 pt-3 border-t border-zinc-800/80 text-[11px] font-mono text-emerald-400">
+            Progressive Overload
+          </div>
+        </div>
+
+        <!-- Personal Card 3: Travel & Coastlines -->
+        <div class="glass-card rounded-3xl p-6 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between text-xs font-mono text-sky-400 mb-4">
+              <span>03 / TRAVEL</span>
+              <i data-lucide="palmtree" class="w-4 h-4"></i>
+            </div>
+            <h3 class="text-lg font-semibold text-cream">Tropical Coasts & Islands</h3>
+            <p class="text-xs text-zinc-400 mt-2 leading-relaxed">
+              Whenever I step away from my desk, I love planning itineraries to tropical coastlines—from exploring Ubud’s rainforests and Gili Trawangan’s beaches in Indonesia to Varkala’s coastal cliffs.
+            </p>
+          </div>
+          <div class="mt-6 pt-3 border-t border-zinc-800/80 text-[11px] font-mono text-sky-400">
+            Ubud • Gili T • Varkala
+          </div>
+        </div>
+
+        <!-- Personal Card 4: Cultural Roots -->
+        <div class="glass-card rounded-3xl p-6 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between text-xs font-mono text-purple-400 mb-4">
+              <span>04 / ROOTS</span>
+              <i data-lucide="languages" class="w-4 h-4"></i>
+            </div>
+            <h3 class="text-lg font-semibold text-cream">Trilingual Connector</h3>
+            <p class="text-xs text-zinc-400 mt-2 leading-relaxed">
+              Thinking and communicating fluently across English, Hindi, and Marathi lets me connect effortlessly with diverse teams—and directly inspired my work on multilingual Indian speech AI.
+            </p>
+          </div>
+          <div class="mt-6 pt-3 border-t border-zinc-800/80 text-[11px] font-mono text-purple-400">
+            Pune Roots • Global Outlook
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 06. LEADERSHIP, CONSULTING & CREDENTIALS ================= -->
+    <section id="experience" class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+      <div class="lg:col-span-5 space-y-4">
+        <span class="text-xs font-mono uppercase tracking-widest text-amber-300">06 / Track Record</span>
+        <h2 class="text-3xl sm:text-4xl font-light text-cream">
+          Experience, Leadership & <span class="font-serif italic text-amber-300">Credentials</span>
+        </h2>
+        <p class="text-sm text-zinc-400 leading-relaxed">
+          A blend of community growth leadership, forensic analytics simulations, and hands-on machine learning engineering backed by a 9.28/10 CGPA at MIT World Peace University.
+        </p>
+
+        <!-- Core Technical Stack Box -->
+        <div class="glass-card rounded-2xl p-5 space-y-3 mt-4">
+          <div class="text-xs font-mono uppercase tracking-wider text-amber-300">Technical & Analytical Stack</div>
+          <div class="text-xs text-zinc-300 space-y-2 font-mono">
+            <div><span class="text-zinc-500">Languages:</span> Python, SQL (MySQL), C, C++</div>
+            <div><span class="text-zinc-500">AI & ML:</span> PyTorch, PyTorch Geometric, Whisper, Wav2Vec2, Scikit-Learn, NLP, Flask</div>
+            <div><span class="text-zinc-500">Data & BI:</span> Pandas, NumPy, Power BI, Tableau, Excel, Matplotlib, Seaborn</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="lg:col-span-7 space-y-4">
+        <div class="glass-card rounded-2xl p-6">
+          <span class="text-xs font-mono text-amber-300">2025 – Present • Community & Outreach Strategy</span>
+          <h3 class="text-lg font-semibold text-cream mt-0.5">Marketing Team Member — Computer Society of India (CSI), MIT-WPU</h3>
+          <p class="text-xs text-zinc-400 mt-1.5 leading-relaxed">
+            Led outreach for technical events, workshops, and hackathons; built communication channels with industry speakers, faculty, and peer communities, reaching 100+ students through data-informed campaign planning.
+          </p>
+        </div>
+
+        <div class="glass-card rounded-2xl p-6">
+          <span class="text-xs font-mono text-emerald-400">May 2026 • Consulting & Forensic Technology</span>
+          <h3 class="text-lg font-semibold text-cream mt-0.5">Data Analytics Job Simulation — Deloitte</h3>
+          <p class="text-xs text-zinc-400 mt-1.5 leading-relaxed">
+            Completed industry job simulations in forensic technology and enterprise data analysis to translate raw operational logs into client-ready findings.
+          </p>
+        </div>
+
+        <div class="glass-card rounded-2xl p-6">
+          <span class="text-xs font-mono text-sky-400">Jul 2024 – Jan 2025 • Applied ML Engineering</span>
+          <h3 class="text-lg font-semibold text-cream mt-0.5">AIML Trainee Internship — PreGrad</h3>
+          <p class="text-xs text-zinc-400 mt-1.5 leading-relaxed">
+            Performed EDA, data manipulation, and visualization across 5+ datasets using NumPy, Pandas, Matplotlib, and Seaborn; developed and validated supervised learning models.
+          </p>
+        </div>
+
+        <div class="glass-card rounded-2xl p-6">
+          <span class="text-xs font-mono text-purple-400">2024 – 2028 • Academic Excellence & IBM Certification</span>
+          <h3 class="text-lg font-semibold text-cream mt-0.5">B.Tech CSE (AI & Data Science) — MIT World Peace University, Pune</h3>
+          <p class="text-xs text-zinc-400 mt-1.5 leading-relaxed">
+            <strong>CGPA: 9.28/10</strong> • Certified in <em>Machine Learning with Python (IBM ML0101EN, June 2025)</em> • Coursework across ML, AI, DSA, Statistics, DBMS (MySQL), OS, and Software Engineering.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 07. EDITORIAL CONTACT CALLOUT ================= -->
+    <section id="contact" class="glass-card rounded-[36px] p-8 sm:p-14 text-center space-y-6 relative overflow-hidden">
+      <span class="text-xs font-mono uppercase tracking-widest text-amber-300">07 / Initiate A Conversation</span>
+      <h2 class="text-3xl sm:text-5xl font-light text-cream max-w-2xl mx-auto leading-tight">
+        Looking for a sharp <span class="font-serif italic text-amber-300">AI & Data mind</span> who can build and communicate?
+      </h2>
+      <p class="text-zinc-400 text-sm sm:text-base max-w-xl mx-auto font-light">
+        Whether it’s an AI/ML internship, a data strategy & analytics role, or a collaborative venture in Pune—my inbox is always open.
+      </p>
+
+      <div class="pt-4 flex flex-wrap items-center justify-center gap-4">
+        <a href="mailto:dhruvvikhe1820@gmail.com"
+           class="px-7 py-3.5 rounded-full bg-cream text-ink hover:bg-amber-200 font-semibold text-sm flex items-center gap-2 transition">
+          <i data-lucide="mail" class="w-4 h-4"></i> dhruvvikhe1820@gmail.com
+        </a>
+        <a href="tel:+917057167777"
+           class="px-6 py-3.5 rounded-full glass-card text-cream hover:border-amber-300/40 text-sm font-mono flex items-center gap-2">
+          <i data-lucide="phone" class="w-4 h-4 text-emerald-400"></i> +91 7057167777
+        </a>
+        <a href="https://www.linkedin.com/in/dhruv-vikhe/" target="_blank" rel="noopener"
+           class="px-6 py-3.5 rounded-full glass-card text-cream hover:border-amber-300/40 text-sm font-mono flex items-center gap-2">
+          <i data-lucide="linkedin" class="w-4 h-4 text-amber-300"></i> LinkedIn
+        </a>
+        <a href="https://github.com/dhruvcodes18" target="_blank" rel="noopener"
+           class="px-6 py-3.5 rounded-full glass-card text-cream hover:border-amber-300/40 text-sm font-mono flex items-center gap-2">
+          <i data-lucide="github" class="w-4 h-4 text-sky-400"></i> @dhruvcodes18
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ================= CASE STUDY / MEMO MODAL DRAWER ================= -->
+  <div id="case-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/80 backdrop-blur-md p-4" onclick="closeCaseModal(event)">
+    <div class="glass-card max-w-2xl w-full rounded-3xl p-7 sm:p-9 border border-amber-300/30 space-y-5 relative" onclick="event.stopPropagation()">
+      <div class="flex items-center justify-between border-b border-zinc-800 pb-4">
+        <span id="modal-tag" class="text-xs font-mono uppercase tracking-widest text-amber-300">EXECUTIVE CASE BRIEF</span>
+        <button onclick="closeCaseModal()" class="px-3 py-1 rounded-full bg-zinc-900 hover:bg-zinc-800 text-xs font-mono text-zinc-300">
+          ESC / Close ✕
+        </button>
+      </div>
+      <h3 id="modal-title" class="text-2xl sm:text-3xl font-semibold text-cream"></h3>
+      <div id="modal-body" class="text-sm sm:text-base text-zinc-300 space-y-3 leading-relaxed font-light"></div>
+      <div id="modal-stack" class="flex flex-wrap gap-2 pt-2"></div>
+      <div class="pt-4 border-t border-zinc-800 flex items-center justify-between">
+        <span class="text-xs font-mono text-zinc-400">Author: Dhruv Vikhe</span>
+        <a href="https://github.com/dhruvcodes18" target="_blank" rel="noopener"
+           class="px-4 py-2 rounded-full bg-cream text-ink hover:bg-amber-200 text-xs font-semibold flex items-center gap-1.5 transition">
+          Inspect on GitHub (@dhruvcodes18) <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="relative z-10 border-t border-zinc-900 py-8 text-center text-xs font-mono text-zinc-500">
+    <div class="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+      <span>© 2026 Dhruv Vikhe • Crafted in Pune, Maharashtra</span>
+      <span>Move your mouse or click anywhere to interact with the constellation field</span>
+    </div>
+  </footer>
+
+  <!-- ================= SCRIPTS ================= -->
+  <script>
+    lucide.createIcons();
+
+    // 1. Live Pune IST Clock
+    function updateClock() {
+      const now = new Date();
+      const istTime = now.toLocaleTimeString('en-IN', {
+        timeZone: 'Asia/Kolkata',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true
+      });
+      document.getElementById('pune-clock').textContent = `${istTime} IST`;
+    }
+    updateClock();
+    setInterval(updateClock, 15000);
+
+    // 2. Interactive Mouse-Hover Constellation & Ripple Canvas + Card Glow
+    const canvas = document.getElementById('interactive-bg');
+    const ctx = canvas.getContext('2d');
+    let width, height;
+    let particles = [];
+    let ripples = [];
+    const mouse = { x: -1000, y: -1000, radius: 170 };
+
+    function resizeCanvas() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+      initParticles();
+    }
+
+    function initParticles() {
+      particles = [];
+      const count = Math.min(85, Math.floor((width * height) / 16000));
+      for (let i = 0; i < count; i++) {
+        particles.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          vx: (Math.random() - 0.5) * 0.45,
+          vy: (Math.random() - 0.5) * 0.45,
+          size: Math.random() * 1.8 + 0.8,
+          isGold: Math.random() > 0.35
+        });
+      }
+    }
+
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    // Track mouse across viewport & update individual glass cards
+    window.addEventListener('mousemove', (e) => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+      document.documentElement.style.setProperty('--cursor-x', `${e.clientX}px`);
+      document.documentElement.style.setProperty('--cursor-y', `${e.clientY}px`);
+
+      document.querySelectorAll('.glass-card').forEach(card => {
+        const rect = card.getBoundingClientRect();
+        card.style.setProperty('--card-x', `${e.clientX - rect.left}px`);
+        card.style.setProperty('--card-y', `${e.clientY - rect.top}px`);
+      });
+    });
+
+    // Click ripple wave effect on background
+    window.addEventListener('click', (e) => {
+      ripples.push({ x: e.clientX, y: e.clientY, r: 5, alpha: 0.55 });
+    });
+
+    function animateBg() {
+      ctx.clearRect(0, 0, width, height);
+
+      // Update & draw particles
+      for (let i = 0; i < particles.length; i++) {
+        const p = particles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+
+        if (p.x < 0 || p.x > width) p.vx *= -1;
+        if (p.y < 0 || p.y > height) p.vy *= -1;
+
+        // Subtle magnetic pull/orbit toward mouse cursor on hover
+        const dxMouse = mouse.x - p.x;
+        const dyMouse = mouse.y - p.y;
+        const distMouse = Math.hypot(dxMouse, dyMouse);
+
+        if (distMouse < mouse.radius) {
+          const force = (mouse.radius - distMouse) / mouse.radius;
+          p.x -= (dxMouse / distMouse) * force * 0.8;
+          p.y -= (dyMouse / distMouse) * force * 0.8;
+
+          // Draw glowing golden thread to mouse cursor
+          ctx.beginPath();
+          ctx.strokeStyle = `rgba(226, 184, 87, ${force * 0.42})`;
+          ctx.lineWidth = 1;
+          ctx.moveTo(p.x, p.y);
+          ctx.lineTo(mouse.x, mouse.y);
+          ctx.stroke();
+        }
+
+        // Draw node
+        ctx.beginPath();
+        ctx.fillStyle = p.isGold ? 'rgba(226, 184, 87, 0.55)' : 'rgba(52, 211, 153, 0.45)';
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Connect nearby nodes
+        for (let j = i + 1; j < particles.length; j++) {
+          const p2 = particles[j];
+          const dist = Math.hypot(p.x - p2.x, p.y - p2.y);
+          if (dist < 115) {
+            ctx.beginPath();
+            ctx.strokeStyle = `rgba(244, 241, 234, ${(1 - dist / 115) * 0.08})`;
+            ctx.lineWidth = 0.7;
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(p2.x, p2.y);
+            ctx.stroke();
+          }
+        }
+      }
+
+      // Draw click ripples
+      for (let i = ripples.length - 1; i >= 0; i--) {
+        const rp = ripples[i];
+        rp.r += 3.5;
+        rp.alpha -= 0.012;
+        if (rp.alpha <= 0) {
+          ripples.splice(i, 1);
+          continue;
+        }
+        ctx.beginPath();
+        ctx.strokeStyle = `rgba(226, 184, 87, ${rp.alpha})`;
+        ctx.lineWidth = 1.2;
+        ctx.arc(rp.x, rp.y, rp.r, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+
+      requestAnimationFrame(animateBg);
+    }
+    animateBg();
+
+    // 3. Interactive 4-Stage Consulting Framework Switcher
+    const stages = [
+      {
+        badge: "PHASE 01 • PROBLEM FORMULATION & FORENSIC EDA",
+        title: "Separating symptoms from root causes before writing a single line of PyTorch.",
+        desc: "In consulting and applied AI alike, 80% of wasted effort comes from solving the wrong metric. I start by auditing raw SQL/tabular schemas, investigating anomalies, handling missing-value bias, and establishing a clear baseline KPI.",
+        tools: ["Exploratory Data Analysis (EDA)", "SQL (MySQL)", "Hypothesis Testing", "Pandas & NumPy"],
+        outcome: "✦ Outcome: Clean, validated feature pipelines aligned with business reality."
+      },
+      {
+        badge: "PHASE 02 • MULTIMODAL & GRAPH TOPOLOGY DESIGN",
+        title: "Structuring complex relationships as graphs, embeddings, and acoustic streams.",
+        desc: "Real-world data rarely lives in flat tables. Whether modeling financial transactions as node networks in PyTorch Geometric or fusing Wav2Vec2 prosody with Whisper multilingual embeddings, I architect representations that capture context.",
+        tools: ["PyTorch Geometric (GNN)", "Wav2Vec2 & Whisper", "Semantic NLP Embeddings", "Feature Engineering"],
+        outcome: "✦ Outcome: High-signal representations across text, audio, and relational graphs."
+      },
+      {
+        badge: "PHASE 03 • EXPLAINABLE MODELING & RIGOROUS VALIDATION",
+        title: "Opening the black box with gated attention, SHAP/LIME, and Precision-Recall rigor.",
+        desc: "Accuracy alone is a vanity metric on imbalanced fraud or credit datasets. I benchmark models across Precision, Recall, and F1-Score, and use sigmoid fusion gates and explainable AI techniques so stakeholders understand why a decision was made.",
+        tools: ["PyTorch Custom Networks", "Scikit-Learn", "Precision / Recall / F1", "Explainable AI (XAI)"],
+        outcome: "✦ Outcome: Auditable, low-latency models that decision-makers can trust."
+      },
+      {
+        badge: "PHASE 04 • FULL-STACK DEPLOYMENT & EXECUTIVE STORYTELLING",
+        title: "Shipping live web applications and translating telemetry into executive action.",
+        desc: "A model sitting in a Jupyter notebook creates zero value. I wrap pipelines into live Flask web apps with real-time visualizations, or synthesize findings into interactive Power BI and Tableau dashboards for leadership.",
+        tools: ["Flask Web Deployment", "Power BI & Tableau", "Cloudflare Tunnels", "Stakeholder Storytelling"],
+        outcome: "✦ Outcome: Production-ready tools and boardroom-ready strategic clarity."
+      }
+    ];
+
+    function setStage(idx) {
+      const s = stages[idx];
+      document.getElementById('stage-badge').textContent = s.badge;
+      document.getElementById('stage-title').textContent = s.title;
+      document.getElementById('stage-desc').textContent = s.desc;
+      document.getElementById('stage-outcome').textContent = s.outcome;
+      document.getElementById('stage-tools').innerHTML = s.tools.map(t =>
+        `<span class="px-3 py-1 rounded-full bg-zinc-900 border border-zinc-700 text-xs font-mono text-amber-300">${t}</span>`
+      ).join('');
+
+      document.querySelectorAll('.stage-btn').forEach((btn, i) => {
+        if (i === idx) {
+          btn.className = "stage-btn glass-card rounded-2xl p-4 text-left border-amber-400/50 bg-amber-400/10";
+        } else {
+          btn.className = "stage-btn glass-card rounded-2xl p-4 text-left";
+        }
+      });
+    }
+
+    // 4. Case Study & Strategic Memo Modal Data
+    const caseData = {
+      deepfake: {
+        tag: "CASE STUDY 01 • MULTIMODAL AUDIO AI (AUG 2026–PRESENT)",
+        title: "Multilingual Audio Deepfake & Sentiment Detection System",
+        body: `
+          <p><strong class="text-cream">Executive Summary:</strong> Engineered a three-module real-time AI pipeline that detects AI-generated (deepfake) voices, transcribes speech across English, Hindi, and Marathi, and classifies speaker sentiment from a single audio input.</p>
+          <p><strong class="text-cream">Architectural Innovation:</strong> Designed a custom <em>Gated Multimodal Fusion Network</em> in PyTorch that dynamically balances acoustic prosody features (Wav2Vec2) against multilingual semantic text embeddings (Whisper) through a learned sigmoid gate.</p>
+          <p><strong class="text-cream">Deployment:</strong> Shipped as a full-stack Flask web application featuring live microphone recording, waveform visualization, and public access via Cloudflare tunnel.</p>
+        `,
+        stack: ["Python", "PyTorch", "Whisper", "Wav2Vec2", "Flask", "Multimodal Fusion"]
+      },
+      gnn: {
+        tag: "CASE STUDY 02 • GRAPH MACHINE LEARNING (OCT–DEC 2025)",
+        title: "Financial Fraud Detection using Graph Neural Networks (GNN)",
+        body: `
+          <p><strong class="text-cream">Executive Summary:</strong> Built an end-to-end fraud detection pipeline in PyTorch Geometric by modeling financial transactions as relational graph structures and applying node classification to isolate anomalous patterns.</p>
+          <p><strong class="text-cream">Strategic Value:</strong> Unlike isolated row-level classifiers, message-passing across transaction edges exposes coordinated fraud rings and high-risk money movement topologies.</p>
+        `,
+        stack: ["Python", "PyTorch", "PyTorch Geometric", "Node Classification", "Anomaly Detection"]
+      },
+      ats: {
+        tag: "CASE STUDY 03 • NLP TALENT INTELLIGENCE (FEB–MAY 2026)",
+        title: "Automated JD-to-Resume Semantic ATS Scanner",
+        body: `
+          <p><strong class="text-cream">Executive Summary:</strong> Developed an end-to-end Applicant Tracking System application that automates job description matching using NLP keyword extraction, semantic skill matching, and relevance scoring.</p>
+          <p><strong class="text-cream">Engineering Impact:</strong> Built modular Pandas-based parsing and ranking pipelines that evaluate candidate resumes against nuanced role requirements in seconds.</p>
+        `,
+        stack: ["Python", "Natural Language Processing (NLP)", "Pandas", "Semantic Matching"]
+      },
+      loan: {
+        tag: "CASE STUDY 04 • CREDIT RISK ANALYTICS (JAN–MAR 2025)",
+        title: "Supervised Loan Classification & Risk Reporting Model",
+        body: `
+          <p><strong class="text-cream">Executive Summary:</strong> Built and optimized a supervised loan classification model with an end-to-end pipeline covering data cleaning, quality checks, and missing-value imputation.</p>
+          <p><strong class="text-cream">Decision Support:</strong> Evaluated model performance rigorously across Precision, Recall, and F1-score, translating statistical outputs into clear credit-risk assessment reports.</p>
+        `,
+        stack: ["Python", "Scikit-Learn", "Pandas", "Seaborn", "Risk Analytics"]
+      },
+      pune_flood: {
+        tag: "STRATEGIC MEMO 01 • URBAN MOBILITY & CIVIC AI",
+        title: "Monsoon Routing & Flood Prediction Engine for Pune",
+        body: `
+          <p><strong class="text-cream">The Urban Problem:</strong> During intense Pune monsoon spells, shortest-distance GPS routing directs traffic into low-lying waterlogged corridors and river-bridge bottlenecks.</p>
+          <p><strong class="text-cream">Proposed Architecture:</strong> A spatio-temporal graph routing engine that fuses ward-level rainfall intensity, topographical drainage gradients, and live crowd-sourced waterlogging alerts to dynamically penalize flood-prone road edges before gridlock occurs.</p>
+        `,
+        stack: ["Graph Routing", "Spatio-Temporal Forecasting", "Civic Strategy", "Pune Smart Mobility"]
+      },
+      legal_xai: {
+        tag: "STRATEGIC MEMO 02 • EXPLAINABLE AI IN ENTERPRISE",
+        title: "Automated Legal Contract Risk Analysis with Explainable AI",
+        body: `
+          <p><strong class="text-cream">The Enterprise Problem:</strong> Legal and compliance officers cannot rely on opaque AI risk scores when reviewing multi-page commercial contracts.</p>
+          <p><strong class="text-cream">Strategic Solution:</strong> Combining transformer-based clause classification with local interpretability frameworks (SHAP/LIME) so every flagged high-risk clause visually highlights the exact trigger phrases driving the risk score.</p>
+        `,
+        stack: ["Explainable AI (SHAP & LIME)", "Legal NLP", "Risk Governance", "Enterprise Trust"]
+      },
+      indic_voice: {
+        tag: "STRATEGIC MEMO 03 • BHARAT AI SECURITY",
+        title: "Securing Regional Indian Voice Ecosystems Against Deepfakes",
+        body: `
+          <p><strong class="text-cream">The Thesis:</strong> Acoustic-only deepfake detectors trained on Western datasets suffer high false-positive rates on Indian speakers due to natural code-switching and regional prosody shifts across Hindi, Marathi, and English.</p>
+          <p><strong class="text-cream">The Solution:</strong> A gated multimodal architecture that cross-checks acoustic micro-artifacts against semantic and sentiment coherence in the spoken transcript.</p>
+        `,
+        stack: ["Multilingual AI", "Wav2Vec2", "Whisper ASR", "Voice Biometrics"]
+      }
+    };
+
+    function openCaseModal(key) {
+      const item = caseData[key];
+      if (!item) return;
+      document.getElementById('modal-tag').textContent = item.tag;
+      document.getElementById('modal-title').textContent = item.title;
+      document.getElementById('modal-body').innerHTML = item.body;
+      document.getElementById('modal-stack').innerHTML = item.stack.map(s =>
+        `<span class="px-3 py-1 rounded-full bg-zinc-900 border border-zinc-700 text-xs font-mono text-amber-300">${s}</span>`
+      ).join('');
+      const modal = document.getElementById('case-modal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeCaseModal() {
+      const modal = document.getElementById('case-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeCaseModal();
+    });
+
+    // 5. Persistent LinkedIn Photo Uploader
+    const savedPhoto = localStorage.getItem('dhruv_linkedin_photo');
+    if (savedPhoto) {
+      document.getElementById('profile-photo').src = savedPhoto;
+    }
+
+    function handlePhotoUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const dataUrl = e.target.result;
+        document.getElementById('profile-photo').src = dataUrl;
+        try {
+          localStorage.setItem('dhruv_linkedin_photo', dataUrl);
+        } catch (err) {
+          console.warn('Photo applied for current session.');
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+
+    // 6. Copy Email Helper
+    function copyEmail() {
+      navigator.clipboard.writeText("dhruvvikhe1820@gmail.com");
+      const btn = document.getElementById("hero-email-btn");
+      btn.innerHTML = `<span class="text-emerald-400">✔ Copied dhruvvikhe1820@gmail.com</span>`;
+      setTimeout(() => {
+        btn.innerHTML = `<i data-lucide="copy" class="w-3.5 h-3.5 text-emerald-400"></i> dhruvvikhe1820@gmail.com`;
+        lucide.createIcons();
+      }, 2200);
+    }
+  </script>
+</body>
+</html>
